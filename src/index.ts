@@ -23,7 +23,9 @@ app.get('/wallet/balance/:address', wallet.balance) // done
 app.get('/accounts', account.index) // done
 app.get('/account/create', account.create) // done
 
-app.get('/transactions', transactions.index)
+app.get('/transactions', transactions.index) // done
+app.post('/transaction/create', transactions.create)
+
 app.get('/contracts', contract.index)
 
 app.get('/util/node-info', util.node_info) // done
