@@ -9,6 +9,8 @@ import { UtilController } from './util'
 const app = express()
 const port = 8045
 
+app.use(express.json({limit: '5mb'}));
+
 const wallet = new WalletController()
 const transactions = new TransactionController()
 const contract = new ContractController()

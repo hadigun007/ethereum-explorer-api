@@ -12,6 +12,16 @@ export class TransactionModel {
     private effectiveGasPrice!: string
     private blockHash!: string
     private blockNumber!: string
+    private value!: string
+
+    public getValue(): string {
+        return this.value;
+    }
+
+    public setValue(value: string): void {
+        this.value = value!;
+    }
+
 
     public getCumulativeGasUsed(): string {
         return this.cumulativeGasUsed;
@@ -115,5 +125,15 @@ export class TransactionModel {
 
     public setBlockNumber(blockNumber: string): void {
         this.blockNumber = blockNumber;
+    }
+
+
+    validateCeate(trx:TransactionModel):boolean{
+        if(
+            trx.getFrom() == null ||
+            trx.getTo() == null ||
+            trx.getValue() == null 
+        ) return false
+        return true
     }
 }

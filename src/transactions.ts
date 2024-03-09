@@ -1,18 +1,51 @@
 import { Request, Response } from 'express'
 import { Web3 } from 'web3';
-import { transactionBuilder } from 'web3/lib/commonjs/eth.exports';
 import { TransactionModel } from './model/transaction';
+import { BlockModel } from './model/block';
 
 export class TransactionController {
     async index(req: Request, res: Response) {
 
         const web3 = new Web3('http://127.0.0.1:8545/');
+        const block_count = await web3.eth.getBlockNumber()
+        const bc = parseInt(block_count.toString())+1
+
+        const blocks:BlockModel[] = []
+        
+        for(let i=1;i<bc;i++){
+            const block = new BlockModel()
+            const raw_block = await web3.eth.getBlock(i)
+
+            block.setHash(raw_block.hash!)
+            block.setParentHash(raw_block.parentHash!)
+            block.setSha3Uncles(raw_block.sha3Uncles!)
+            block.setStateRoot(raw_block.stateRoot!)
+            block.setTransactionsRoot(raw_block.transactionsRoot!)
+            block.setReceiptsRoot(raw_block.receiptsRoot)
+            block.setNumber(raw_block.number.toString())
+            block.setGasUsed(raw_block.gasUsed.toString()!)
+            block.setGasLimit(raw_block.gasLimit.toString()!)
+            block.setExtraData(raw_block.extraData!)
+            block.setLogsBloom(raw_block.logsBloom!)
+            block.setTimestamp(raw_block.timestamp.toString()!)
+            block.setDifficulty(raw_block.difficulty?.toString()!)
+            block.setUncles(raw_block.uncles!)
+            block.setTransactions(raw_block.transactions)
+            block.setSize(raw_block.size.toString()!)
+            block.setMixHash(raw_block.mixHash!)
+            block.setNonce(raw_block.nonce.toString()!)
+            block.setBaseFeePerGas(raw_block.baseFeePerGas?.toString()!)
+            block.setMiner(raw_block.miner!)
+
+            blocks.push(block)
+        }
 
         const count = await web3.eth.getTransactionCount('0x2546BcD3c84621e976D8185a91A922aE77ECEc30')
 
         res.json({
             status: 'success',
-            count: count.toString(),
+            block_count: block_count.toString(),
+            block: blocks,
         })
     }
 
@@ -21,20 +54,22 @@ export class TransactionController {
 
         const web3 = new Web3('http://127.0.0.1:8545/');
         const transaction = new TransactionModel()
+        const request = new TransactionModel()
 
-        const account = web3.eth.accounts.privateKeyToAccount('0x4651f9c219fc6401fe0b3f82129467c717012287ccb61950d2a8ede0687857ba');
-        console.log(account.address);
-        console.log(await web3.eth.getBalance(account.address));
-
+        request.setFrom(req.body['from'])
+        request.setTo(req.body['to'])
+        request.setValue(req.body['value'])
+        
+        if(!request.validateCeate(request)) return res.status(500).json({status:"failed"})
 
         const rawTransaction = {
-            from: '0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199',
-            to: '0xdD2FD4581271e230360230F9337D5c0430Bf44C0',
-            value: 1,
+            from: request.getFrom(),
+            to: request.getTo(),
+            value: request.getValue(),
             maxFeePerGas: (await web3.eth.getBlock()).baseFeePerGas! * 2n,
             maxPriorityFeePerGas: 100000,
             gasLimit: 2000000,
-            nonce: await web3.eth.getTransactionCount('0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199'),
+            nonce: await web3.eth.getTransactionCount(request.getFrom()),
         };
 
         const signedTransaction = await web3.eth.accounts.signTransaction(rawTransaction, '0xdf57089febbacf7ba0bc227dafbffa9fc08a93fdc68e1e42411a14efcf23656e');
