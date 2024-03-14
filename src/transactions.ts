@@ -2,11 +2,12 @@ import { Request, Response } from 'express'
 import { Web3 } from 'web3';
 import { TransactionModel } from './model/transaction';
 import { BlockModel } from './model/block';
+import { host } from './config';
 
 export class TransactionController {
     async index(req: Request, res: Response) {
 
-        const web3 = new Web3('http://127.0.0.1:8545/');
+        const web3 = new Web3(host);
         const block_count = await web3.eth.getBlockNumber()
         const bc = parseInt(block_count.toString())+1
 
@@ -52,7 +53,7 @@ export class TransactionController {
 
     async create(req: Request, res: Response) {
 
-        const web3 = new Web3('http://127.0.0.1:8545/');
+        const web3 = new Web3(host);
         const transaction = new TransactionModel()
         const request = new TransactionModel()
 
@@ -65,14 +66,14 @@ export class TransactionController {
         const rawTransaction = {
             from: request.getFrom(),
             to: request.getTo(),
-            value: request.getValue(),
+            value: web3.utils.toWei(request.getValue(), 'ether'),
             maxFeePerGas: (await web3.eth.getBlock()).baseFeePerGas! * 2n,
             maxPriorityFeePerGas: 100000,
             gasLimit: 2000000,
             nonce: await web3.eth.getTransactionCount(request.getFrom()),
         };
 
-        const signedTransaction = await web3.eth.accounts.signTransaction(rawTransaction, '0xdf57089febbacf7ba0bc227dafbffa9fc08a93fdc68e1e42411a14efcf23656e');
+        const signedTransaction = await web3.eth.accounts.signTransaction(rawTransaction, req.body['private_key']);
 
         const tx = web3.eth.sendSignedTransaction(signedTransaction.rawTransaction);
 

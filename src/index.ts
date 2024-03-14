@@ -4,6 +4,7 @@ import { TransactionController } from './transactions'
 import { ContractController } from './contract'
 import { AccountController } from './account'
 import { UtilController } from './util'
+import { MultisigWallet } from './multisig'
 
 
 const app = express()
@@ -16,7 +17,11 @@ const transactions = new TransactionController()
 const contract = new ContractController()
 const account = new AccountController()
 const util = new UtilController()
+const multisig = new MultisigWallet()
 
+
+app.post('/multisig/create', multisig.create)
+app.post('/multisig/owners', multisig.getOwners)
 
 app.get('/wallets', wallet.index)
 app.get('/wallet/create', wallet.create) // done
@@ -32,6 +37,7 @@ app.get('/contracts', contract.index)
 
 app.get('/util/node-info', util.node_info) // done
 app.get('/util/block-number', util.block_number) // done
+
 
 
 

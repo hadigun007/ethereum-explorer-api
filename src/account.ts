@@ -1,11 +1,12 @@
 import {Request, Response} from 'express'
 import { Web3 } from 'web3';
+import { host } from './config';
 
 export class AccountController {
     
     
     async index(req:Request, res:Response){
-        const web3 = new Web3('http://127.0.0.1:8545/');
+        const web3 = new Web3(host);
 
         const accounts = await web3.eth.getAccounts()
         
@@ -19,7 +20,7 @@ export class AccountController {
    
    
     async create(req:Request, res:Response){
-        const web3 = new Web3('http://127.0.0.1:8545/');
+        const web3 = new Web3(host);
 
         const accounts = web3.eth.accounts.create()
         
