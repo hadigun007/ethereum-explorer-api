@@ -13,6 +13,19 @@ export class TransactionModel {
     private blockHash!: string
     private blockNumber!: string
     private value!: string
+    private chainId!:string
+    private chainId!:string
+    private chainId!:string
+    private chainId!:string
+    private chainId!:string
+    private chainId!:string
+    private chainId!:string
+    private input!:string
+    private accessList!:string
+    private v!:string
+    private r!:string
+    private s!:string
+    private data!:string
 
     public getValue(): string {
         return this.value;

@@ -104,4 +104,20 @@ export class TransactionController {
             })
         })
     }
+
+    async transaction(req: Request, res: Response){
+        const web3 = new Web3(host);
+        const request = new TransactionModel()
+
+        request.setTransactionHash(req.params["tx_hash"])
+
+        const trx = await web3.eth.getTransaction(request.getTransactionHash())
+
+        
+
+        console.log(trx);
+        
+
+
+    }
 }

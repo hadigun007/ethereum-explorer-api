@@ -22,6 +22,7 @@ const multisig = new MultisigWallet()
 
 app.post('/multisig/create', multisig.create)
 app.post('/multisig/owners', multisig.getOwners)
+app.post('/multisig/add-owner', multisig.addOwners)
 
 app.get('/wallets', wallet.index)
 app.get('/wallet/create', wallet.create) // done
@@ -31,7 +32,8 @@ app.get('/accounts', account.index) // done
 app.get('/account/create', account.create) // done
 
 app.get('/transactions', transactions.index) // done
-app.post('/transaction/create', transactions.create)
+app.post('/transaction/create', transactions.create) // done
+app.get('/transaction/:tx_hash', transactions.transaction)
 
 app.get('/contracts', contract.index)
 
