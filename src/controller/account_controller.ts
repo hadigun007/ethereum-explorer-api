@@ -1,6 +1,6 @@
 import {Request, Response} from 'express'
 import { Web3 } from 'web3';
-import { host } from './config';
+import { host } from '../config';
 
 export class AccountController {
     

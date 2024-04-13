@@ -1,8 +1,8 @@
 import { Request, Response } from 'express'
 import { Web3 } from 'web3';
-import { TransactionModel } from './model/transaction';
-import { BlockModel } from './model/block';
-import { host } from './config';
+import { TransactionModel } from '../model/transaction';
+import { BlockModel } from '../model/block';
+import { host } from '../config';
 
 export class TransactionController {
     async index(req: Request, res: Response) {

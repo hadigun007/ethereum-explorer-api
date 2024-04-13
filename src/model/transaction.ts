@@ -14,12 +14,6 @@ export class TransactionModel {
     private blockNumber!: string
     private value!: string
     private chainId!:string
-    private chainId!:string
-    private chainId!:string
-    private chainId!:string
-    private chainId!:string
-    private chainId!:string
-    private chainId!:string
     private input!:string
     private accessList!:string
     private v!:string

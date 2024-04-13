@@ -1,2 +1,2 @@
 export const host = 'http://127.0.0.1:8545'
-export const private_key = "0xdcb75b926d36d2dcd4b57ec22c0f077297eac134c1ef081f93db50413b6e6c3e"
+export const private_key = "0x763fce2695e1ba1edff6530aca4826d78995732f68d0fc15d009318a4004ca4e"
