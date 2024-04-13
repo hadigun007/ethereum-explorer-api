@@ -84,6 +84,12 @@ export class MultisigModel {
         if (multisig.getAddress() == null || multisig.getNew_owner() == null || multisig.getOld_owner() == null) return false
         return true
     }
+    validateRequired(multisig: MultisigModel) {
+        console.log(multisig);
+        
+        if (multisig.getAddress() == null || multisig.getRequired() == null) return false
+        return true
+    }
     validateBalance(multisig: MultisigModel) {
         console.log(multisig);
         if (multisig.getBalance() == null) return false
