@@ -13,6 +13,7 @@ export class TransactionModel {
     private blockHash!: string
     private blockNumber!: string
     private value!: string
+    private private_key!: string
     private chainId!:string
     private input!:string
     private accessList!:string
@@ -21,12 +22,77 @@ export class TransactionModel {
     private s!:string
     private data!:string
 
+
+    public getPrivate_key(): string {
+        return this.private_key;
+    }
+
+    public setPrivate_key(private_key: string): void {
+        this.private_key = private_key;
+    }
+
+    public getChainId(): string {
+        return this.chainId;
+    }
+
+    public setChainId(chainId: string): void {
+        this.chainId = chainId;
+    }
+
+    public getInput(): string {
+        return this.input;
+    }
+
+    public setInput(input: string): void {
+        this.input = input;
+    }
+
+    public getAccessList(): string {
+        return this.accessList;
+    }
+
+    public setAccessList(accessList: string): void {
+        this.accessList = accessList;
+    }
+
+    public getV(): string {
+        return this.v;
+    }
+
+    public setV(v: string): void {
+        this.v = v;
+    }
+
+    public getR(): string {
+        return this.r;
+    }
+
+    public setR(r: string): void {
+        this.r = r;
+    }
+
+    public getS(): string {
+        return this.s;
+    }
+
+    public setS(s: string): void {
+        this.s = s;
+    }
+
+    public getData(): string {
+        return this.data;
+    }
+
+    public setData(data: string): void {
+        this.data = data;
+    }
+
     public getValue(): string {
         return this.value;
     }
 
     public setValue(value: string): void {
-        this.value = value!;
+        this.value = value;
     }
 
 
@@ -35,7 +101,7 @@ export class TransactionModel {
     }
 
     public setCumulativeGasUsed(cumulativeGasUsed: string): void {
-        this.cumulativeGasUsed! = cumulativeGasUsed;
+        this.cumulativeGasUsed = cumulativeGasUsed;
     }
 
     public getLogsBloom(): string {
@@ -137,7 +203,7 @@ export class TransactionModel {
 
     validateCeate(trx:TransactionModel):boolean{
         if(
-            trx.getFrom() == null ||
+            trx.getPrivate_key() == null ||
             trx.getTo() == null ||
             trx.getValue() == null 
         ) return false

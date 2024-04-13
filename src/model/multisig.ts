@@ -2,9 +2,38 @@ export class MultisigModel {
     private address!: string;
     private new_owner !: string;
     private old_owner !: string;
+    private destination !: string;
+    private value !: string;
+    private data !: string;
     private owners!: string[];
     private required!: string;
     private balance!:string;
+
+    public getDestination():string {
+        return this.destination;
+    }
+
+    public setDestination(destination:string): void {
+        this.destination = destination;
+    }
+    
+    public getValue():string {
+        return this.value;
+    }
+
+    public setValue(value:string): void {
+        this.value = value;
+    }
+   
+    
+    public getData():string {
+        return this.data;
+    }
+
+    public setData(data:string): void {
+        this.data = data;
+    }
+   
 
     public getNew_owner():string {
         return this.new_owner;
@@ -70,6 +99,10 @@ export class MultisigModel {
 
     validateGetOwner(multisig: MultisigModel) {
         if (multisig.getAddress() == null) return false
+        return true
+    }
+    validateSubmitTransaction(multisig: MultisigModel) {
+        if (multisig.getAddress() == null || multisig.getDestination() == null || multisig.getValue() == null || multisig.getData() == null) return false
         return true
     }
     validateAddOwner(multisig: MultisigModel) {

@@ -5,11 +5,16 @@ import { BlockModel } from '../model/block';
 import { host } from '../config';
 
 export class TransactionController {
+
+    web3 = new Web3(host);
+
+    
     async index(req: Request, res: Response) {
 
         const web3 = new Web3(host);
         const block_count = await web3.eth.getBlockNumber()
         const bc = parseInt(block_count.toString())+1
+        
 
         const blocks:BlockModel[] = []
         
@@ -57,14 +62,17 @@ export class TransactionController {
         const transaction = new TransactionModel()
         const request = new TransactionModel()
 
-        request.setFrom(req.body['from'])
+        request.setPrivate_key(req.body['private_key'])
+        console.log(request.getPrivate_key());
+        
         request.setTo(req.body['to'])
         request.setValue(req.body['value'])
+        request.setFrom(web3.eth.accounts.privateKeyToAccount(request.getPrivate_key()).address)
         
         if(!request.validateCeate(request)) return res.status(500).json({status:"failed"})
 
         const rawTransaction = {
-            from: request.getFrom(),
+            from:request.getFrom(),
             to: request.getTo(),
             value: web3.utils.toWei(request.getValue(), 'ether'),
             maxFeePerGas: (await web3.eth.getBlock()).baseFeePerGas! * 2n,
@@ -73,7 +81,7 @@ export class TransactionController {
             nonce: await web3.eth.getTransactionCount(request.getFrom()),
         };
 
-        const signedTransaction = await web3.eth.accounts.signTransaction(rawTransaction, req.body['private_key']);
+        const signedTransaction = await web3.eth.accounts.signTransaction(rawTransaction, request.getPrivate_key());
 
         const tx = web3.eth.sendSignedTransaction(signedTransaction.rawTransaction);
 
@@ -81,7 +89,6 @@ export class TransactionController {
         tx.on('sent', () => console.log('sent'))
         tx.on('transactionHash', () => console.log('transactionHash'))
         tx.on('receipt', () => console.log('receipt'))
-        tx.on('error', () => console.log('error'))
         tx.on('confirmation', (tx) => {
 
             transaction.setCumulativeGasUsed(tx.receipt.cumulativeGasUsed.toString())
@@ -103,6 +110,13 @@ export class TransactionController {
                 data: transaction
             })
         })
+        tx.on("error", (er) => {
+            console.log('error..')
+            console.log('==============')
+            console.log(er.toJSON())
+            console.log('==============')
+        })
+
     }
 
     async transaction(req: Request, res: Response){
