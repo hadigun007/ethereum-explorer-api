@@ -66,6 +66,29 @@ export class MultisigWallet {
 
     }
     
+    async replaceOwner(req: Request, res: Response){
+        const multisig_model = new MultisigModel()
+        const multisig_service = new MultisigService()
+        
+        multisig_model.setAddress(req.body["contract_address"])
+        multisig_model.setOld_owner(req.body["old_owner"])
+        multisig_model.setNew_owner(req.body["new_owner"])
+
+        if (!multisig_model.validateReplaceOwner(multisig_model)) return res.json({
+            status: 'validation failed',
+        })
+
+        const result = await multisig_service.replaceOwner(multisig_model)
+        if(result == null)  return res.json({
+            status: 'service failed',
+        })
+        res.json({
+            status:"success",
+            data:result
+        })   
+
+    }
+    
     async getRequired(req: Request, res: Response){
         const multisig_model = new MultisigModel()
         const multisig_service = new MultisigService()

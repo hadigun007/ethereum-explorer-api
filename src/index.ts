@@ -24,6 +24,7 @@ const multisig = new MultisigWallet()
 app.post('/multisig/create', multisig.create)
 app.post('/multisig/add-owner', multisig.addOwners)
 app.post('/multisig/remove-owner', multisig.removeOwner)
+app.post('/multisig/replace-owner', multisig.replaceOwner)
 app.get('/multisig/get-owners', multisig.getOwners)
 app.get('/multisig/get-required/:address', multisig.getRequired)
 

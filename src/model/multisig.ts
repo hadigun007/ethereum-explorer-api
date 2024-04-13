@@ -1,6 +1,7 @@
 export class MultisigModel {
     private address!: string;
     private new_owner !: string;
+    private old_owner !: string;
     private owners!: string[];
     private required!: string;
     private balance!:string;
@@ -11,6 +12,14 @@ export class MultisigModel {
 
     public setNew_owner(new_owner:string): void {
         this.new_owner = new_owner;
+    }
+
+    public getOld_owner():string {
+        return this.old_owner;
+    }
+
+    public setOld_owner(old_owner:string): void {
+        this.old_owner = old_owner;
     }
 
     setAddress(address: string) {
@@ -64,15 +73,15 @@ export class MultisigModel {
         return true
     }
     validateAddOwner(multisig: MultisigModel) {
-        console.log(multisig);
-        
         if (multisig.getAddress() == null || multisig.getNew_owner() == null) return false
         return true
     }
     validateRemoveOwner(multisig: MultisigModel) {
-        console.log(multisig);
-        
         if (multisig.getAddress() == null || multisig.getNew_owner() == null) return false
+        return true
+    }
+    validateReplaceOwner(multisig: MultisigModel) {
+        if (multisig.getAddress() == null || multisig.getNew_owner() == null || multisig.getOld_owner() == null) return false
         return true
     }
     validateBalance(multisig: MultisigModel) {
