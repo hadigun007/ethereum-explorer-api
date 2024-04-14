@@ -72,6 +72,7 @@ contract MultisigWallet {
         require(
         ownerCount <= MAX_OWNER_COUNT
         && _required <= ownerCount
+        && _required != 0
         && ownerCount != 0
         );
         _;
