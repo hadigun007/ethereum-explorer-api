@@ -3,10 +3,10 @@ const solc = require("solc");
 
 
 async function main() {
-  const sourceCode = readFileSync("src/contract/Multisig.sol", "utf8");
-  const { abi, bytecode } = compiles(sourceCode, "Multisig");
+  const sourceCode = readFileSync("src/contract/MultisigWallet.sol", "utf8");
+  const { abi, bytecode } = compiles(sourceCode, "MultisigWallet");
   const artifact = JSON.stringify({ abi, bytecode }, null, 2);
-  writeFileSync("src/artifacts/Multisig.json", artifact);
+  writeFileSync("src/artifacts/MultisigWallet.json", artifact);
 }
 
 function compiles(sourceCode, contractName) {

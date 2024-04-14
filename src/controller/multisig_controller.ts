@@ -141,19 +141,21 @@ export class MultisigWallet {
         const multisig_model = new MultisigModel()
         const multisig_service = new MultisigService()
         
-        multisig_model.setAddress(req.params["address"])
+        multisig_model.setAddress(req.body["address"])
         if (!multisig_model.validateGetOwner(multisig_model)) return res.json({
             status: 'validation failed',
         })
 
-        
-        const owners = await multisig_service.getOwners(multisig_model.getAddress())
-        if(owners == null)  return res.json({
+        const required = await multisig_service.getRequired(multisig_model.getAddress())
+        if(required == null)  return res.json({
             status: 'service failed',
         })
+
+        console.log(required);
+        
         res.json({
             status:"success",
-            data:owners
+            data:required.toString()
         })   
 
     }

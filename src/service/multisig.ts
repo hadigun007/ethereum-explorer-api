@@ -1,4 +1,4 @@
-import { abi, bytecode } from "../artifacts/Multisig"
+import { abi, bytecode } from "../artifacts/MultisigWallet.json"
 import { Web3 } from "web3";
 import { host, private_key } from '../config'
 import { ReceiptModel } from "../model/receipt";
@@ -17,6 +17,8 @@ export class MultisigService {
         const receipt = new ReceiptModel()
 
         this.web3.eth.accounts.wallet.add(this.signer);
+        console.log(multisig_model.getPayload());
+        
         const multisig = this.contract.deploy({
             arguments: multisig_model.getPayload(),
             data: bytecode
@@ -63,7 +65,7 @@ export class MultisigService {
 
     async getRequired(address: string) {
         const contract = new this.web3.eth.Contract(abi,address)
-        return await contract.methods.getOwners().call()
+        return await contract.methods.getRequired().call()
     }
     
     

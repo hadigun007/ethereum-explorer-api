@@ -67,12 +67,13 @@ contract MultisigWallet {
         require(_address != address(0x0));
         _;
     }
-
+// 3 2
     modifier validRequirement(uint ownerCount, uint _required){
-        require(ownerCount <= MAX_OWNER_COUNT
+        require(
+        ownerCount <= MAX_OWNER_COUNT
         && _required <= ownerCount
-        && required != 0
-        && ownerCount != 0);
+        && ownerCount != 0
+        );
         _;
     }
 
@@ -82,8 +83,9 @@ contract MultisigWallet {
         }
     }
 
-    constructor(address[] memory  _owners, uint _required) validRequirement(_owners.length, _required
-    ){
+    constructor(address[] memory  _owners, uint _required) 
+    validRequirement(_owners.length, _required)
+    {
          for(uint i = 0;i<_owners.length; i++){
             require(!isOwner[_owners[i]] && _owners[i] != address(0x0));
             isOwner[_owners[i]] = true;
@@ -215,6 +217,10 @@ contract MultisigWallet {
 
     function getOwners()public view returns (address[] memory){
         return owners;
+    }
+
+    function getRequired()public view returns (uint){
+        return required;
     }
 
     function getConfirmations(uint transactionId)public view returns (address[] memory _confirmations){
