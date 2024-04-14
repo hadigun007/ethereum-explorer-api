@@ -78,10 +78,7 @@ contract MultisigWallet {
         _;
     }
 
-    function deposit() payable external {
-        if(msg.value > 0){
-        emit Deposit(msg.sender, msg.value);
-        }
+    receive() payable external {
     }
 
     constructor(address[] memory  _owners, uint _required) 
