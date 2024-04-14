@@ -25,10 +25,11 @@ app.post('/multisig/create', multisig.create)
 app.post('/multisig/add-owner', multisig.addOwners)
 app.post('/multisig/remove-owner', multisig.removeOwner)
 app.post('/multisig/replace-owner', multisig.replaceOwner)
-app.get('/multisig/get-owners', multisig.getOwners)
+app.post('/multisig/get-owners', multisig.getOwners)
 app.post('/multisig/get-required', multisig.getRequired)
 app.post('/multisig/change-requirement', multisig.changeRequirement)
 app.post('/multisig/submit-transaction', multisig.submitTransaction)
+app.post('/multisig/transaction-count', multisig.transactionCount)
 
 app.get('/wallets', wallet.index)
 app.get('/wallet/create', wallet.create) // done

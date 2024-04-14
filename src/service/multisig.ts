@@ -149,6 +149,8 @@ export class MultisigService {
 
     }
     async replaceOwner(multisig:MultisigModel) {
+        console.log(multisig);
+        
         const receipt = new ReceiptModel()
         const contract = new this.web3.eth.Contract(abi,multisig.getAddress())
         await contract.methods.replaceOwner(multisig.getOld_owner(), multisig.getNew_owner())
@@ -266,5 +268,11 @@ export class MultisigService {
 
             return receipt
 
+    }
+    
+    async transactionCount(multisig:MultisigModel) {
+        
+        const contract = new this.web3.eth.Contract(abi,multisig.getAddress())
+        return await contract.methods.getTransactionCount(multisig.getPending(), multisig.getExecuted()).call()
     }
 }

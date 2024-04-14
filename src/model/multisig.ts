@@ -8,7 +8,23 @@ export class MultisigModel {
     private owners!: string[];
     private required!: string;
     private balance!:string;
+    private pending!:string;
+    private executed!:string;
 
+    public getPending():string {
+        return this.pending;
+    }
+
+    public setPending(pending:string): void {
+        this.pending = pending;
+    }
+    public getExecuted():string {
+        return this.executed;
+    }
+
+    public setExecuted(executed:string): void {
+        this.executed = executed;
+    }
     public getDestination():string {
         return this.destination;
     }
@@ -103,6 +119,10 @@ export class MultisigModel {
     }
     validateSubmitTransaction(multisig: MultisigModel) {
         if (multisig.getAddress() == null || multisig.getDestination() == null || multisig.getValue() == null || multisig.getData() == null) return false
+        return true
+    }
+    validateTransactionCount(multisig: MultisigModel) {
+        if (multisig.getAddress() == null || multisig.getPending() == null || multisig.getExecuted() == null) return false
         return true
     }
     validateAddOwner(multisig: MultisigModel) {

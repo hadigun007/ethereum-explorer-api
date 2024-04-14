@@ -136,7 +136,8 @@ contract MultisigWallet {
         confirmTransaction(transactionId);
     }
     
-    function addTransaction(address destination, uint value, bytes memory data) internal notNull(destination) returns (uint transactionId){
+    function addTransaction(address destination, uint value, bytes memory data) internal 
+    returns (uint transactionId){
         transactionId = transactionCount;
         transactions[transactionId] = Transaction({
             destination: destination,
