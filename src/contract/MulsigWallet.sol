@@ -191,4 +191,61 @@ contract MultisigWallet {
         }
         return result;
     }
+
+    function revokeConfirmation(uint transactionId) public ownerExists(msg.sender) confirmed(transactionId, msg.sender) notExecuted(transactionId){
+        confirmations[transactionId][msg.sender] = false;
+        emit Revocation(msg.sender, transactionId);
+    }
+
+    function getConfirmationCount(uint transactionId) public view returns (uint count){
+        for(uint i=0;i<owners.length;i++){
+            if(confirmations[transactionId][owners[i]]){
+                count+=1;
+            }
+        }
+    }
+
+    function getTransactionCount(bool pending, bool executed) public view returns (uint count){
+        for(uint i=0;i<transactionCount;i++){
+            if(pending && !transactions[i].executed || executed && transactions[i].executed){
+                count+=1;
+            }
+        }
+    }
+
+    function getOwners()public view returns (address[] memory){
+        return owners;
+    }
+
+    function getConfirmations(uint transactionId)public view returns (address[] memory _confirmations){
+        address[] memory confirmationTemp = new address[](owners.length);
+        uint count = 0;
+        uint i;
+        for (i=0;i<owners.length;i++){
+            if(confirmations[transactionId][owners[i]]){
+                confirmationTemp[count] = owners[i];
+                count +=1;
+            }
+        }
+        _confirmations = new address[](count);
+        for (i=0; i<count; i++){
+            _confirmations[i] = confirmationTemp[i];
+        }
+    }
+
+    function getTransactionIds(uint from, uint to, bool pending, bool executed) public view returns (uint[] memory _transactionIds){
+        uint[] memory transactionIdsTemp = new uint[](transactionCount);
+        uint count = 0;
+        uint i;
+        for(i=0;i<transactionCount;i++){
+            if(pending && !transactions[i].executed || executed && transactions[i].executed){
+                transactionIdsTemp[count] = i;
+                count += 1;
+            }
+        }
+        _transactionIds = new uint[](to - from);
+        for(i=from; i<to; i++){
+            _transactionIds[i-from] = transactionIdsTemp[i];
+        }
+    }
 }
