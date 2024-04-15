@@ -287,4 +287,33 @@ export class MultisigWallet {
             data:transaction_id.toString()
         })   
     }
+    
+    async getConfirmationCount(req: Request, res: Response){
+        const multisig_model = new MultisigModel()
+        const multisig_service = new MultisigService()
+        
+        multisig_model.setAddress(req.body["contract_address"])
+        multisig_model.setTransactionId(req.body["transaction_id"])
+
+        console.log(multisig_model);
+        
+
+        if (!multisig_model.validateConfirmationCount(multisig_model)) return res.json({
+            status: 'validation failed',
+        })
+        
+        const transaction_id = await multisig_service.getConfirmationCount(multisig_model)
+
+        console.log("========");
+        console.log(transaction_id);
+        console.log("========");
+        
+        if(transaction_id == null)  return res.json({
+            status: 'service failed',
+        })
+        res.json({
+            status:"success",
+            data:transaction_id.toString()
+        })   
+    }
 }

@@ -317,7 +317,7 @@ contract MultisigWallet {
         }
     }
 
-    // not yet
+    // done: but start from 0
     function getTransactionIds(
         uint from,
         uint to,

@@ -184,5 +184,10 @@ export class MultisigModel {
         if (multisig.getAddress() == null || multisig.getFrom() == null|| multisig.getDestination() == null || multisig.getPending() == null|| multisig.getExecuted() == null) return false
         return true
     }
+    
+    validateConfirmationCount(multisig: MultisigModel) {
+        if (multisig.getAddress() == null || multisig.getTransactionId() == null) return false
+        return true
+    }
 }
 

@@ -33,6 +33,7 @@ app.post('/multisig/transaction-count', multisig.transactionCount)
 app.post('/multisig/get-confirmations', multisig.getConfirmations)
 app.post('/multisig/confirm-transaction', multisig.confirmTransaction)
 app.post('/multisig/get-transaction-ids', multisig.getTransactionIds)
+app.post('/multisig/get-confirmation-count', multisig.getConfirmationCount)
 
 
 app.get('/wallets', wallet.index)
