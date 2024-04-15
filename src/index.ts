@@ -30,6 +30,7 @@ app.post('/multisig/get-required', multisig.getRequired)
 app.post('/multisig/change-requirement', multisig.changeRequirement)
 app.post('/multisig/submit-transaction', multisig.submitTransaction)
 app.post('/multisig/transaction-count', multisig.transactionCount)
+app.post('/multisig/get-confirmations', multisig.getConfirmations)
 
 app.get('/wallets', wallet.index)
 app.get('/wallet/create', wallet.create) // done

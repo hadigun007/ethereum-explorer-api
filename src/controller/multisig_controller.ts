@@ -191,7 +191,6 @@ export class MultisigWallet {
         multisig_model.setAddress(req.body["contract_address"])
         multisig_model.setPending(req.body["pending"])
         multisig_model.setExecuted(req.body["executed"])
-        console.log(multisig_model);
 
         if (!multisig_model.validateTransactionCount(multisig_model)) return res.json({
             status: 'validation failed',
@@ -204,6 +203,31 @@ export class MultisigWallet {
         res.json({
             status:"success",
             data:transaction_count.toString()
+        })   
+    }
+    
+    async getConfirmations(req: Request, res: Response){
+        const multisig_model = new MultisigModel()
+        const multisig_service = new MultisigService()
+        
+        multisig_model.setAddress(req.body["contract_address"])
+        multisig_model.setTransactionId(req.body["transaction_id"])
+
+        if (!multisig_model.validateTransactionConfirmations(multisig_model)) return res.json({
+            status: 'validation failed',
+        })
+
+        
+        const transaction_confirmations = await multisig_service.transactionConfirmations(multisig_model)
+
+        console.log(transaction_confirmations);
+        
+        if(transaction_confirmations == null)  return res.json({
+            status: 'service failed',
+        })
+        res.json({
+            status:"success",
+            data:transaction_confirmations.toString()
         })   
     }
 }

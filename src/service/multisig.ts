@@ -275,4 +275,9 @@ export class MultisigService {
         const contract = new this.web3.eth.Contract(abi,multisig.getAddress())
         return await contract.methods.getTransactionCount(multisig.getPending(), multisig.getExecuted()).call()
     }
+    
+    async transactionConfirmations(multisig:MultisigModel) {
+        const contract = new this.web3.eth.Contract(abi,multisig.getAddress())
+        return await contract.methods.getConfirmations(multisig.getTransactionId()).call()
+    }
 }

@@ -24,7 +24,6 @@ contract MultisigWallet {
     struct Transaction {
         address destination;
         uint value;
-        bytes data;
         bool executed;
     }
 
@@ -131,18 +130,17 @@ contract MultisigWallet {
         emit RequirementChange(_required);
     }
 
-    function submitTransaction(address destination, uint value, bytes memory data) public returns (uint transactionId){
-        transactionId = addTransaction(destination, value, data);
+    function submitTransaction(address destination, uint value) public returns (uint transactionId){
+        transactionId = addTransaction(destination, value);
         confirmTransaction(transactionId);
     }
     
-    function addTransaction(address destination, uint value, bytes memory data) internal 
+    function addTransaction(address destination, uint value) internal 
     returns (uint transactionId){
         transactionId = transactionCount;
         transactions[transactionId] = Transaction({
             destination: destination,
             value: value, 
-            data:data,
             executed: false
         });
         transactionCount+=1;
@@ -152,21 +150,21 @@ contract MultisigWallet {
     function confirmTransaction(uint transactionId)  public ownerExists(msg.sender) transactionExists(transactionId) notConfirmed(transactionCount, msg.sender){
         confirmations[transactionId][msg.sender] = true;
         emit Confirmation(msg.sender, transactionId);
-        executeTransaction(transactionId);
+        // executeTransaction(transactionId);
     }
 
-    function executeTransaction(uint transactionId) public ownerExists(msg.sender) confirmed(transactionId, msg.sender) notExecuted(transactionId){
-        if(isConfirmed(transactionId)){
-            Transaction storage txn = transactions[transactionId];
-            txn.executed = true;
-            if(external_call(txn.destination, txn.value, txn.data.length, txn.data)){
-                emit Execution(transactionId);
-            }else{
-                emit ExecutionFailure(transactionId);
-                txn.executed;
-            }
-        }
-    }
+    // function executeTransaction(uint transactionId) public ownerExists(msg.sender) confirmed(transactionId, msg.sender) notExecuted(transactionId){
+    //     if(isConfirmed(transactionId)){
+    //         Transaction storage txn = transactions[transactionId];
+    //         txn.executed = true;
+    //         if(external_call(txn.destination, txn.value, txn.data.length, txn.data)){
+    //             emit Execution(transactionId);
+    //         }else{
+    //             emit ExecutionFailure(transactionId);
+    //             txn.executed;
+    //         }
+    //     }
+    // }
 
     function isConfirmed(uint transactionId) public view returns (bool){
         uint count = 0;

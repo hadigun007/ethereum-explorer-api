@@ -10,7 +10,15 @@ export class MultisigModel {
     private balance!:string;
     private pending!:string;
     private executed!:string;
+    private transaction_id!:string;
 
+    public getTransactionId():string {
+        return this.transaction_id;
+    }
+
+    public setTransactionId(transaction_id:string): void {
+        this.transaction_id = transaction_id;
+    }
     public getPending():string {
         return this.pending;
     }
@@ -146,6 +154,10 @@ export class MultisigModel {
     validateBalance(multisig: MultisigModel) {
         console.log(multisig);
         if (multisig.getBalance() == null) return false
+        return true
+    }
+    validateTransactionConfirmations(multisig: MultisigModel) {
+        if (multisig.getAddress() == null || multisig.getTransactionId() == null) return false
         return true
     }
 }
