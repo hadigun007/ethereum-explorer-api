@@ -220,7 +220,32 @@ export class MultisigWallet {
         
         const transaction_confirmations = await multisig_service.transactionConfirmations(multisig_model)
 
+        if(transaction_confirmations == null)  return res.json({
+            status: 'service failed',
+        })
+        res.json({
+            status:"success",
+            data:transaction_confirmations.toString()
+        })   
+    }
+    
+    async confirmTransaction(req: Request, res: Response){
+        const multisig_model = new MultisigModel()
+        const multisig_service = new MultisigService()
+        
+        multisig_model.setAddress(req.body["contract_address"])
+        multisig_model.setTransactionId(req.body["transaction_id"])
+        multisig_model.setPrivateKey(req.body["private_key"])
+
+        if (!multisig_model.validateConfirmTransaction(multisig_model)) return res.json({
+            status: 'validation failed',
+        })
+        
+        const transaction_confirmations = await multisig_service.confirmTransaction(multisig_model)
+
+        console.log("========");
         console.log(transaction_confirmations);
+        console.log("========");
         
         if(transaction_confirmations == null)  return res.json({
             status: 'service failed',
@@ -228,6 +253,38 @@ export class MultisigWallet {
         res.json({
             status:"success",
             data:transaction_confirmations.toString()
+        })   
+    }
+   
+    async getTransactionIds(req: Request, res: Response){
+        const multisig_model = new MultisigModel()
+        const multisig_service = new MultisigService()
+        
+        multisig_model.setAddress(req.body["contract_address"])
+        multisig_model.setFrom(req.body["from"])
+        multisig_model.setDestination(req.body["to"])
+        multisig_model.setPending(req.body["pending"])
+        multisig_model.setExecuted(req.body["executed"])
+
+        console.log(multisig_model);
+        
+
+        if (!multisig_model.validateGetTransactionId(multisig_model)) return res.json({
+            status: 'validation failed',
+        })
+        
+        const transaction_id = await multisig_service.getTransactionIds(multisig_model)
+
+        console.log("========");
+        console.log(transaction_id);
+        console.log("========");
+        
+        if(transaction_id == null)  return res.json({
+            status: 'service failed',
+        })
+        res.json({
+            status:"success",
+            data:transaction_id.toString()
         })   
     }
 }

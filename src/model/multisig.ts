@@ -11,7 +11,23 @@ export class MultisigModel {
     private pending!:string;
     private executed!:string;
     private transaction_id!:string;
+    private private_key!:string;
+    private from!:string;
 
+    public getFrom():string {
+        return this.from;
+    }
+
+    public setFrom(from:string): void {
+        this.from = from;
+    }
+    public getPrivateKey():string {
+        return this.private_key;
+    }
+
+    public setPrivateKey(private_key:string): void {
+        this.private_key = private_key;
+    }
     public getTransactionId():string {
         return this.transaction_id;
     }
@@ -158,6 +174,14 @@ export class MultisigModel {
     }
     validateTransactionConfirmations(multisig: MultisigModel) {
         if (multisig.getAddress() == null || multisig.getTransactionId() == null) return false
+        return true
+    }
+    validateConfirmTransaction(multisig: MultisigModel) {
+        if (multisig.getAddress() == null || multisig.getPrivateKey() == null|| multisig.getTransactionId() == null) return false
+        return true
+    }
+    validateGetTransactionId(multisig: MultisigModel) {
+        if (multisig.getAddress() == null || multisig.getFrom() == null|| multisig.getDestination() == null || multisig.getPending() == null|| multisig.getExecuted() == null) return false
         return true
     }
 }

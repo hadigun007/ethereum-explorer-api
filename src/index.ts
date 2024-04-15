@@ -31,10 +31,13 @@ app.post('/multisig/change-requirement', multisig.changeRequirement)
 app.post('/multisig/submit-transaction', multisig.submitTransaction)
 app.post('/multisig/transaction-count', multisig.transactionCount)
 app.post('/multisig/get-confirmations', multisig.getConfirmations)
+app.post('/multisig/confirm-transaction', multisig.confirmTransaction)
+app.post('/multisig/get-transaction-ids', multisig.getTransactionIds)
+
 
 app.get('/wallets', wallet.index)
 app.get('/wallet/create', wallet.create) // done
-app.get('/wallet/balance/:address', wallet.balance) // done
+app.post('/wallet/balance', wallet.balance) // done
 
 app.get('/accounts', account.index) // done
 app.get('/account/create', account.create) // done
